@@ -1,0 +1,16 @@
+gradio==3.50.2
+fastapi==0.95.2
+pydantic==1.10.7
+starlette==0.27.0
+fpdf
+grad-cam
+numpy
+pandas
+pillow
+matplotlib
+opencv-python
+torch
+torchvision
+xlrd
+openpyxl
+scikit-learn
