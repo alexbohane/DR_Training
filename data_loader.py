@@ -60,16 +60,16 @@ test_dataset.data = test_df.reset_index(drop=True)
 # --- Create DataLoaders ---
 train_loader = DataLoader(
     train_dataset,
-    batch_size=4,
+    batch_size=32,
     shuffle=True,
-    num_workers=0,
+    num_workers=4,
     pin_memory=True
 )
 
 test_loader = DataLoader(
     test_dataset,
-    batch_size=4,
+    batch_size=32,
     shuffle=False,
-    num_workers=0,
+    num_workers=4,
     pin_memory=True
 )
