@@ -28,7 +28,7 @@ Thumbs.db
 *.pt
 *.h5
 *.onnx
-runs/                # for Weights & Biases, TensorBoard, etc.
+runs/                
 checkpoints/
 outputs/
 inference_results/
