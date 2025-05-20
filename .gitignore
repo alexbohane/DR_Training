@@ -1,0 +1,45 @@
+# Python cache
+__pycache__/
+*.py[cod]
+*.so
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Virtual environments
+.venv/
+env/
+venv/
+
+# Environment and package files
+*.env
+.env.*
+*.egg-info/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs and outputs
+*.log
+
+# Model artifacts and results
+*.pth
+*.pt
+*.h5
+*.onnx
+runs/                # for Weights & Biases, TensorBoard, etc.
+checkpoints/
+outputs/
+inference_results/
+
+# Large datasets
+data/
+datasets/
+MESSIDOR/
+*.zip
+*.tar
+*.gz
+*.jpg
+*.jpeg
+*.png
