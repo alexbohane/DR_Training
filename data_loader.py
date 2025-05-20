@@ -12,9 +12,13 @@ from transforms import light_transform, heavy_transform, test_transform
 # --- Initialize Preprocessor ---
 preprocessor = OpenCV_DR_Preprocessor(apply_clahe=True)
 
+#define root dir
+root_dir = '/workspace/THEIA_Training/DR_Training/MESSIDOR'
+# root_dir='/Users/abohane/Desktop/THEIA Training/MESSIDOR'
+
 # --- Load Full Dataset (for dataframe) ---
 full_dataset = MessidorOpenCVDataset(
-    root_dir='/Users/abohane/Desktop/THEIA Training/MESSIDOR',
+    root_dir=root_dir,
     preprocessor=preprocessor,
     light_transform=None,
     heavy_transform=None,
@@ -36,7 +40,7 @@ print(f"Test set size: {len(test_df)}")
 
 # --- Create Train and Test Datasets ---
 train_dataset = MessidorOpenCVDataset(
-    root_dir='/Users/abohane/Desktop/THEIA Training/MESSIDOR',
+    root_dir=root_dir,
     preprocessor=preprocessor,
     light_transform=light_transform,
     heavy_transform=heavy_transform,
@@ -45,7 +49,7 @@ train_dataset = MessidorOpenCVDataset(
 train_dataset.data = train_df.reset_index(drop=True)
 
 test_dataset = MessidorOpenCVDataset(
-    root_dir='/Users/abohane/Desktop/THEIA Training/MESSIDOR',
+    root_dir=root_dir,
     preprocessor=preprocessor,
     light_transform=test_transform,
     heavy_transform=test_transform,
