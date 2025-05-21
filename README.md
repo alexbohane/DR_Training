@@ -8,7 +8,8 @@ The next steps are to perform self-supervised learning to see if this results in
 
 ## 📁 Project Structure
 
-DR_Training/
+```
+DR_Training/ 
 ├── models/ # ResNet, DenseNet, and custom CNN definitions
 ├── utils/ # Helper functions (class weights, metrics, etc.)
 ├── data_loader.py # Dataset loading and splitting
@@ -23,6 +24,7 @@ DR_Training/
 ├── saved_models/ # Saved model weights for inference
 ├── THEIA_APP.py # Quick gradio web-app
 └── README.md # This file
+```
 
 ## 🧪 Features
 
