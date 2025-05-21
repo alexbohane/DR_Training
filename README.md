@@ -71,7 +71,7 @@ Here is a preview of the demo
 
 ## Prototype
 ### I also built a Prototype using React (frontend) and FastAPI (backend)
-
+This can be accessed at the following link 
 ![App preview](Prototype.png)
 
 
