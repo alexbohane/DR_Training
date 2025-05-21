@@ -55,3 +55,15 @@ pip install -r requirements.txt
 ## DATA
 
 Download data from the MESSIDOR 1 dataset website. On the official MESSIDOR website perform all suggested data cleaning manually (duplication removal, correcting labels)
+
+## Gradio APP
+
+To run the gradio app for inference, run the following:
+
+```bash
+python THEIA_APP.py
+```
+
+Here is a preview of the demo
+
+ ![App preview](DEMO.png)

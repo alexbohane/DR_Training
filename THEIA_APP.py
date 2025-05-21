@@ -8,7 +8,7 @@ from predictor import DRPredictor
 # --- Load model ---
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 model = get_resnet18_model(num_classes=4)
-model.load_state_dict(torch.load("saved_models/resnet_messidor.pth", map_location=device))
+model.load_state_dict(torch.load("saved_models/resnet18_messidor.pth", map_location=device))
 model.to(device)
 model.eval()
 
@@ -36,7 +36,7 @@ app = gr.Interface(
         gr.Slider(minimum=0.0, maximum=1.0, value=0.3, label="Overlay Opacity")
     ],
     outputs=[
-        gr.Image(label="Grad-CAM Overlay"),
+        gr.Image(label="Grad-CAM Overlay", height=300, width=300),
         gr.Plot(label="Prediction Probabilities"),
         gr.Text(label="Final Prediction"),
         gr.File(label="Download Report")
@@ -46,4 +46,4 @@ app = gr.Interface(
 )
 
 if __name__ == "__main__":
-    app.launch(share=False)
+    app.launch(share=True)
