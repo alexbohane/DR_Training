@@ -20,7 +20,6 @@ DR_Training/
 ├── run_training.ipynb # Notebook interface for running training models
 ├── requirements.txt # Python dependencies
 ├── MESSIDOR/ # (Local) Folder for raw dataset
-├── logs/ # Saved training CSV logs per run
 ├── saved_models/ # Saved model weights for inference
 ├── THEIA_APP.py # Quick gradio web-app
 └── README.md # This file
