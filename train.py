@@ -12,7 +12,7 @@ def train_model(model, train_loader, val_loader, num_epochs=50, learning_rate=1e
     optimizer = optim.Adam(model.parameters(), lr=learning_rate)
 
     # Early stopping setup
-    patience = 5
+    patience = 10
     best_val_loss = float('inf')
     epochs_without_improvement = 0
     best_model_weights = copy.deepcopy(model.state_dict())

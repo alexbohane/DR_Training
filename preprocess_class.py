@@ -6,7 +6,7 @@ from PIL import Image
 
 class OpenCV_DR_Preprocessor:
     def __init__(self, apply_clahe=True):
-        self.img_size = (512, 512)
+        self.img_size = (600, 600)
         self.apply_clahe = apply_clahe
 
         # ImageNet normalization

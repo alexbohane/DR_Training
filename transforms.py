@@ -15,7 +15,7 @@ heavy_transform = T.Compose([
 ])
 
 test_transform = T.Compose([
-    T.Resize((512, 512)),
+    T.Resize((600, 600)),
 ])
 
 
