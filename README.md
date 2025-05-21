@@ -1,6 +1,6 @@
 # Diabetic Retinopathy Detection using Deep Learning
 
-This project implements a deep learning pipeline to classify Diabetic Retinopathy (DR) stages from fundus images using the MESSIDOR dataset. The models include CNN architectures like ResNet18 and DenseNet121, trained using PyTorch with augmentation, custom preprocessing, and evaluation metrics such as accuracy and AUC. 
+This project implements a deep learning pipeline to classify Diabetic Retinopathy (DR) stages from fundus images using the MESSIDOR dataset. The models include CNN architectures like ResNet18 and DenseNet121, trained using PyTorch with augmentation, custom preprocessing, and evaluation metrics such as accuracy and AUC.
 
 The next steps are to perform self-supervised learning to see if this results in model improvement. Also some data augmentation will be explored and a binary mask will be applied to see if this yields a performance boost.
 
@@ -9,7 +9,7 @@ The next steps are to perform self-supervised learning to see if this results in
 ## 📁 Project Structure
 
 ```
-DR_Training/ 
+DR_Training/
 ├── models/ # ResNet, DenseNet, and custom CNN definitions
 ├── utils/ # Helper functions (class weights, metrics, etc.)
 ├── data_loader.py # Dataset loading and splitting
@@ -67,3 +67,11 @@ python THEIA_APP.py
 Here is a preview of the demo
 
  ![App preview](DEMO.png)
+
+
+## Prototype
+### I also built a Prototype using React (frontend) and FastAPI (backend)
+
+![App preview](Prototype.png)
+
+
