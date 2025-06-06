@@ -18,7 +18,7 @@ def apply_gradcam(grad_cam, img_tensor, original_img, opacity=0.3):
     original_img_float = original_img / np.max(original_img)
 
     grayscale_cam = grad_cam(input_tensor=img_tensor, targets=None)[0]
-    grad_cam._hooks_enabled = False
+    # Do not disable hooks so the GradCAM instance can be reused
 
     overlay_rgb = show_cam_on_image(
         original_img_float,
