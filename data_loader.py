@@ -13,8 +13,8 @@ from transforms import light_transform, heavy_transform, test_transform
 preprocessor = OpenCV_DR_Preprocessor(apply_clahe=True)
 
 #define root dir
-root_dir = '/workspace/THEIA_Training/DR_Training/MESSIDOR'
-# root_dir='/Users/abohane/Desktop/THEIA Training/MESSIDOR'
+# root_dir = '/workspace/THEIA_Training/DR_Training/MESSIDOR'
+root_dir='/Users/abohane/Desktop/THEIA Training/MESSIDOR'
 
 # --- Load Full Dataset (for dataframe) ---
 full_dataset = MessidorOpenCVDataset(
