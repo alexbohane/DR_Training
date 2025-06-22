@@ -8,6 +8,7 @@ __pycache__/
 
 # Virtual environments
 .venv/
+.theia_training/
 env/
 venv/
 
@@ -28,7 +29,7 @@ Thumbs.db
 *.pt
 *.h5
 *.onnx
-runs/                
+runs/
 checkpoints/
 outputs/
 inference_results/
