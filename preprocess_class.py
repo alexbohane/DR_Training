@@ -5,9 +5,10 @@ from torchvision import transforms
 from PIL import Image
 
 class OpenCV_DR_Preprocessor:
-    def __init__(self, apply_clahe=True):
+    def __init__(self, apply_clahe=True, apply_roi_mask=True):
         self.img_size = (600, 600)
         self.apply_clahe = apply_clahe
+        self.apply_roi_mask = apply_roi_mask
 
         # ImageNet normalization
         self.mean = [0.485, 0.456, 0.406]
@@ -18,6 +19,30 @@ class OpenCV_DR_Preprocessor:
         # self.std = [0.5, 0.5, 0.5]
 
         self.normalize = transforms.Normalize(mean=self.mean, std=self.std)
+
+    def get_retina_mask(self, img):
+        """Detects the retina region and returns a binary mask."""
+        gray = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
+        _, thresh = cv2.threshold(gray, 10, 255, cv2.THRESH_BINARY)
+        contours, _ = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+        if not contours:
+            # fallback: no mask
+            return np.ones(gray.shape, dtype=np.uint8) * 255
+        largest_contour = max(contours, key=cv2.contourArea)
+        mask = np.zeros(gray.shape, dtype=np.uint8)
+        # Ensure largest_contour is in the right format
+        if not isinstance(largest_contour, np.ndarray):
+            largest_contour = np.array(largest_contour)
+        # Draw filled contour (the retina)
+        cv2.drawContours(mask, [largest_contour.astype(np.int32)], 0, 255, -1) # type: ignore
+        return mask
+
+
+    def apply_mask(self, img, mask):
+        """Applies a binary mask to the image (sets background to black)."""
+        masked_img = img.copy()
+        masked_img[mask == 0] = 0
+        return masked_img
 
 
     def load_image(self, input):
@@ -51,8 +76,12 @@ class OpenCV_DR_Preprocessor:
         start_y = (h - min_dim) // 2
         return img[start_y:start_y+min_dim, start_x:start_x+min_dim]
 
-    def preprocess(self, img_path):
+    def preprocess(self, img_path, normalize=False):
         img = self.load_image(img_path)
+
+        if self.apply_roi_mask:
+            mask = self.get_retina_mask(img)
+            img = self.apply_mask(img, mask)
 
         if self.apply_clahe:
             img = self.apply_clahe_rgb(img)
@@ -69,7 +98,10 @@ class OpenCV_DR_Preprocessor:
         img = np.transpose(img, (2, 0, 1))
 
         img = torch.from_numpy(img)  # Convert to tensor
-        img = self.normalize(img)    # Normalize using ImageNet mean and std
+        # img = self.normalize(img)    # Normalize using ImageNet mean and std
+
+        if normalize:
+            img = self.normalize(img)
 
         return img, image
 

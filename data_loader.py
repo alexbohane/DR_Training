@@ -10,7 +10,7 @@ from preprocess_class import OpenCV_DR_Preprocessor
 from transforms import light_transform, heavy_transform, test_transform
 
 # --- Initialize Preprocessor ---
-preprocessor = OpenCV_DR_Preprocessor(apply_clahe=True)
+preprocessor = OpenCV_DR_Preprocessor(apply_clahe=True, apply_roi_mask=True)
 
 #define root dir
 # root_dir = '/workspace/THEIA_Training/DR_Training/MESSIDOR'
@@ -22,7 +22,7 @@ full_dataset = MessidorOpenCVDataset(
     preprocessor=preprocessor,
     light_transform=None,
     heavy_transform=None,
-    minority_classes=[3]
+    minority_classes=[1]
 )
 
 df = full_dataset.data  # Full annotations dataframe
@@ -44,18 +44,18 @@ train_dataset = MessidorOpenCVDataset(
     preprocessor=preprocessor,
     light_transform=light_transform,
     heavy_transform=heavy_transform,
-    minority_classes=[3]
+    minority_classes=[1]
 )
-train_dataset.data = train_df.reset_index(drop=True)
+train_dataset.data = train_df.reset_index(drop=True) # type: ignore
 
 test_dataset = MessidorOpenCVDataset(
     root_dir=root_dir,
     preprocessor=preprocessor,
     light_transform=test_transform,
     heavy_transform=test_transform,
-    minority_classes=[3]
+    minority_classes=[1]
 )
-test_dataset.data = test_df.reset_index(drop=True)
+test_dataset.data = test_df.reset_index(drop=True) # type: ignore
 
 # --- Create DataLoaders ---
 train_loader = DataLoader(
