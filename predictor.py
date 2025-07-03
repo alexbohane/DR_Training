@@ -36,9 +36,7 @@ class DRPredictor:
 
         # Generate matplotlib figure
         fig, ax = plt.subplots()
-        ax.bar(range(len(probs)), probs)
-        ax.set_xticks(range(len(probs)))
-        ax.set_xticklabels(self.class_labels.values())
+        ax.bar(['Healthy', 'Unhealthy'], probs)
         ax.set_ylim(0, 1)
         ax.set_title("Class Probabilities")
         ax.set_ylabel("Probability")

@@ -1,11 +1,11 @@
 import torch
 import torch.nn as nn
 import torch.optim as optim
-from utils.metrics import calculate_accuracy, calculate_auc
+from utils.metrics import calculate_accuracy, calculate_auc, calculate_f1, calculate_sensitivity_specificity
 import csv
 import copy
 
-def train_model(model, train_loader, val_loader, num_epochs=50, learning_rate=1e-4, device='cuda', class_weights=None, model_id="run1"):
+def train_model(model, train_loader, val_loader, num_epochs=50, learning_rate=1e-4, device='cpu', class_weights=None, model_id="run1"):
     metrics = []
     model = model.to(device)
     criterion = nn.CrossEntropyLoss(weight=class_weights)
@@ -48,13 +48,19 @@ def train_model(model, train_loader, val_loader, num_epochs=50, learning_rate=1e
         avg_val_loss = val_running_loss / len(val_loader)
         val_accuracy = calculate_accuracy(model, val_loader, device)
         val_auc = calculate_auc(model, val_loader, device)
+        val_f1 = calculate_f1(model, val_loader, device)
+        val_sensitivity, val_specificity = calculate_sensitivity_specificity(model, val_loader, device)
+
 
         metrics.append({
             "epoch": epoch + 1,
             "loss": avg_train_loss,
             "val_loss": avg_val_loss,
             "val_accuracy": val_accuracy,
-            "val_auc": val_auc
+            "val_auc": val_auc,
+            "val_f1": val_f1,
+            "val_sensitivity": val_sensitivity,
+            "val_specificity": val_specificity
         })
 
         print(f"Epoch {epoch+1}/{num_epochs}, Loss: {avg_train_loss:.4f}, Val Loss: {avg_val_loss:.4f}, Val Accuracy: {val_accuracy:.4f}, Val AUC: {val_auc:.4f}")
@@ -75,7 +81,7 @@ def train_model(model, train_loader, val_loader, num_epochs=50, learning_rate=1e
 
         # Save metrics
         with open(f"logs/{model_id}.csv", mode="w", newline="") as f:
-            writer = csv.DictWriter(f, fieldnames=["epoch", "loss", "val_loss", "val_accuracy", "val_auc"])
+            writer = csv.DictWriter(f, fieldnames=["epoch", "loss", "val_loss", "val_accuracy", "val_auc", "val_f1", "val_sensitivity", "val_specificity"])
             writer.writeheader()
             writer.writerows(metrics)
 

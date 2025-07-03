@@ -7,16 +7,14 @@ from predictor import DRPredictor
 
 # --- Load model ---
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-model = get_resnet18_model(num_classes=4)
+model = get_resnet18_model(num_classes=2)
 model.load_state_dict(torch.load("saved_models/resnet18_messidor.pth", map_location=device))
 model.to(device)
 model.eval()
 
 class_labels = {
-    0: "No DR",
-    1: "Mild",
-    2: "Moderate",
-    3: "Severe"
+    0: "Healthy (No/Mild DR)",
+    1: "Unhealthy (Moderate/Severe DR)"
 }
 
 # --- Init pipeline ---

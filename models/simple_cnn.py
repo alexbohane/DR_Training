@@ -3,7 +3,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 
 class SimpleCNN(nn.Module):
-    def __init__(self, num_classes=4):
+    def __init__(self, num_classes=2):
         super(SimpleCNN, self).__init__()
 
         self.conv1 = nn.Sequential(
