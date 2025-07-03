@@ -5,7 +5,7 @@ import glob
 import torch
 
 class MessidorOpenCVDataset(Dataset):
-    def __init__(self, root_dir, preprocessor, light_transform=None, heavy_transform=None, minority_classes=[1]):
+    def __init__(self, root_dir, preprocessor, light_transform=None, heavy_transform=None, final_transform=False, minority_classes=[1]):
         """
         Args:
             root_dir (str): Path to the root directory containing folders and xls files
@@ -17,6 +17,7 @@ class MessidorOpenCVDataset(Dataset):
         self.heavy_transform = heavy_transform
         self.minority_classes = minority_classes
         self.data = self._load_all_annotations() # This is the dataset
+        self.final_transform = final_transform
 
     def _load_all_annotations(self):
         """Loads all .xls annotation files and creates a master dataframe."""

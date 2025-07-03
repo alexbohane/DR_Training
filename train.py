@@ -5,7 +5,7 @@ from utils.metrics import calculate_accuracy, calculate_auc, calculate_f1, calcu
 import csv
 import copy
 
-def train_model(model, train_loader, val_loader, num_epochs=50, learning_rate=1e-4, device='cuda', class_weights=None, model_id="run1"):
+def train_model(model, train_loader, val_loader, num_epochs=50, learning_rate=1e-4, device='cpu', class_weights=None, model_id="run1"):
     metrics = []
     model = model.to(device)
     criterion = nn.CrossEntropyLoss(weight=class_weights)

@@ -3,6 +3,7 @@ import numpy as np
 import torch
 from torchvision import transforms
 from PIL import Image
+import io
 
 class OpenCV_DR_Preprocessor:
     def __init__(self, apply_clahe=True, apply_roi_mask=True):
@@ -14,9 +15,9 @@ class OpenCV_DR_Preprocessor:
         self.mean = [0.485, 0.456, 0.406]
         self.std = [0.229, 0.224, 0.225]
 
-        # SSL Normalization
-        # self.mean = [0.5, 0.5, 0.5]
-        # self.std = [0.5, 0.5, 0.5]
+        # For green channel normalization (as per your original code)
+        # self.mean = [0.456]  # Green channel mean
+        # self.std = [0.224]  # Green channel std
 
         self.normalize = transforms.Normalize(mean=self.mean, std=self.std)
 
@@ -76,7 +77,34 @@ class OpenCV_DR_Preprocessor:
         start_y = (h - min_dim) // 2
         return img[start_y:start_y+min_dim, start_x:start_x+min_dim]
 
-    def preprocess(self, img_path, normalize=False):
+    def apply_jpeg_compression(self, img, quality_range=(20, 30), p=0.99):
+        """
+        Apply JPEG compression to simulate phone camera artifacts.
+
+        Args:
+            img: numpy array in RGB format
+            quality_range: tuple of (min_quality, max_quality)
+            p: probability of applying compression
+         """
+        if np.random.random() > p:
+            return img
+
+        # Convert to PIL Image
+        pil_img = Image.fromarray(img.astype(np.uint8))
+
+        # Random quality factor
+        quality = np.random.randint(quality_range[0], quality_range[1] + 1)
+
+        # Apply compression
+        buffer = io.BytesIO()
+        pil_img.save(buffer, format='JPEG', quality=quality, optimize=True)
+        buffer.seek(0)
+
+        # Load back
+        compressed_img = Image.open(buffer)
+        return np.array(compressed_img)
+
+    def preprocess(self, img_path, normalize=False, apply_jpeg=False):
         img = self.load_image(img_path)
 
         if self.apply_roi_mask:
@@ -86,6 +114,9 @@ class OpenCV_DR_Preprocessor:
         if self.apply_clahe:
             img = self.apply_clahe_rgb(img)
 
+        if apply_jpeg:
+            img = self.apply_jpeg_compression(img, quality_range=(20, 21), p=0.99)
+
         img = self.center_crop(img)
 
         img = cv2.resize(img, self.img_size)  #
@@ -94,8 +125,13 @@ class OpenCV_DR_Preprocessor:
         # FOR VISUALISATION
         image = img.copy()
 
-        # Convert (H, W, C) to (C, H, W) for PyTorch
+
+        # # Convert (H, W, C) to (C, H, W) for PyTorch
         img = np.transpose(img, (2, 0, 1))
+
+        # # GREEN CHANNEL ONLY ###################################
+        # img = img[:,:,1]  # Green channel, shape (H, W)
+        # img = np.expand_dims(img, axis=0)
 
         img = torch.from_numpy(img)  # Convert to tensor
         # img = self.normalize(img)    # Normalize using ImageNet mean and std

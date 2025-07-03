@@ -9,12 +9,13 @@ from dataset_class import MessidorOpenCVDataset
 from preprocess_class import OpenCV_DR_Preprocessor
 from transforms import light_transform, heavy_transform, test_transform
 
+
 # --- Initialize Preprocessor ---
 preprocessor = OpenCV_DR_Preprocessor(apply_clahe=True, apply_roi_mask=True)
 
 #define root dir
-# root_dir = '/workspace/THEIA_Training/DR_Training/MESSIDOR'
-root_dir='/Users/abohane/Desktop/THEIA Training/MESSIDOR'
+root_dir = '/workspace/DR_Training/MESSIDOR'
+# root_dir='/Users/abohane/Desktop/THEIA Training/MESSIDOR'
 
 # --- Load Full Dataset (for dataframe) ---
 full_dataset = MessidorOpenCVDataset(
@@ -22,6 +23,7 @@ full_dataset = MessidorOpenCVDataset(
     preprocessor=preprocessor,
     light_transform=None,
     heavy_transform=None,
+    final_transform=False,  # No final transform for full datas
     minority_classes=[1]
 )
 
@@ -44,6 +46,7 @@ train_dataset = MessidorOpenCVDataset(
     preprocessor=preprocessor,
     light_transform=light_transform,
     heavy_transform=heavy_transform,
+    final_transform=False,  # Apply final transform for training
     minority_classes=[1]
 )
 train_dataset.data = train_df.reset_index(drop=True) # type: ignore
@@ -53,6 +56,7 @@ test_dataset = MessidorOpenCVDataset(
     preprocessor=preprocessor,
     light_transform=test_transform,
     heavy_transform=test_transform,
+    final_transform=False,  # Apply final transform for testing
     minority_classes=[1]
 )
 test_dataset.data = test_df.reset_index(drop=True) # type: ignore
@@ -60,7 +64,7 @@ test_dataset.data = test_df.reset_index(drop=True) # type: ignore
 # --- Create DataLoaders ---
 train_loader = DataLoader(
     train_dataset,
-    batch_size=4,
+    batch_size=32,
     shuffle=True,
     num_workers=4,
     pin_memory=True
@@ -68,7 +72,7 @@ train_loader = DataLoader(
 
 test_loader = DataLoader(
     test_dataset,
-    batch_size=4,
+    batch_size=32,
     shuffle=False,
     num_workers=4,
     pin_memory=True
